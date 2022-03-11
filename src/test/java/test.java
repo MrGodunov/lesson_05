@@ -4,6 +4,7 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import org.apache.logging.log4j.core.util.Assert;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
@@ -18,6 +19,22 @@ import java.nio.file.Paths;
 import static io.restassured.RestAssured.given;
 
 public class test {
+
+    public void compareSpecies(String mortySpecies, String species) {
+        if (mortySpecies.equals(species)) {
+            System.out.println("Расы совпадают");
+        } else {
+            System.out.println("Расы не совпадают");
+        }
+    }
+
+    public void compareLocation(String mortyLocation, String location) {
+        if (mortyLocation.equals(location)) {
+            System.out.println("Локации совпадают");
+        } else {
+            System.out.println("Локации не совпадают");
+        }
+    }
 
     @Tag("1api")
     @Test
@@ -37,6 +54,10 @@ public class test {
         JSONArray episodesWithMorty = jsonMorty.getJSONArray("episode");
         int episodesCount = episodesWithMorty.length();
         String lastEpisode = episodesWithMorty.getString(episodesCount - 1);
+        String mortySpecies = jsonMorty.getString("species");
+        String mortyLocation = jsonMorty.getJSONObject("location").getString("name");
+        System.out.println("Раса Морти: " + mortySpecies);
+        System.out.println("Локация Морти: " + mortyLocation);
         System.out.println("Последний эпизод с Морти: " + lastEpisode);
 
 
@@ -69,6 +90,9 @@ public class test {
         String species = jsonCharacter.getString("species");
         String location = jsonCharacter.getJSONObject("location").getString("name");
         System.out.println("Его раса — " + species + ", локация — " + location);
+
+        compareSpecies(mortySpecies, species);
+        compareLocation(mortyLocation, location);
     }
 
     @Tag("2api")
